@@ -1,0 +1,37 @@
+name: AuTerm build
+
+on:
+  push:
+    branches:
+      - auterm
+
+jobs:
+  auterm-build:
+    name: build-steps
+    runs-on: macos-13
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4
+      with:
+        repository: thedjnK/AuTerm
+        ref: main
+        fetch-depth: 1
+        fetch-tags: false
+    - uses: actions/download-artifact@v4
+      with:
+        name: toolchain
+        github-token: ${{ secrets.MY_PERSONAL_ACCESS_TOKEN }}
+        run-id: 10964534887
+    - uses: seanmiddleditch/gha-setup-ninja@master
+    - name: build-auterm
+      run: |
+        sudo tar -xf qt6.7.3-static-mac.tar.gz -C /
+        /usr/local/Qt/6.7.3-static/bin/qmake6 -config release
+        make -j4
+        cd release
+        tar -czf ../AuTerm_test_Mac_v.tar.gz AuTerm.app/
+    - name: upload-auterm
+      uses: actions/upload-artifact@v4
+      with:
+        name: auterm
+        path: AuTerm_test_Mac_v.tar.gz
