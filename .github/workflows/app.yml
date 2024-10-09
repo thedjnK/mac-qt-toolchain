@@ -21,12 +21,12 @@ jobs:
       with:
         name: toolchain
         github-token: ${{ secrets.MY_PERSONAL_ACCESS_TOKEN }}
-        run-id: 10964534887
+        run-id: 11258693691
     - uses: seanmiddleditch/gha-setup-ninja@master
     - name: build-auterm
       run: |
-        sudo tar -xf qt6.7.3-static-mac.tar.gz -C /
-        /usr/local/Qt/6.7.3-static/bin/qmake6 -config release
+        sudo tar -xf qt6.8.0-static-mac.tar.gz -C /
+        /usr/local/Qt/6.8.0-static/bin/qmake6 -config release
         make -j4
         cd release
         tar -czf ../AuTerm_test_Mac_v.tar.gz AuTerm.app/
